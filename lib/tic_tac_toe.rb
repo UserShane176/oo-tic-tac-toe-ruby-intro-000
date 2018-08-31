@@ -1,5 +1,5 @@
 class TicTacToe
-  def initialize(board)
+  def initialize(board = nil)
     @board = board || Array.new(9, " ")
   end
 
@@ -14,7 +14,7 @@ class TicTacToe
    [2,4,6]
  ]
 
- def display_board(board)
+ def display_board
   puts " #{board[0]} | #{board[1]} | #{board[2]} "
   puts "-----------"
   puts " #{board[3]} | #{board[4]} | #{board[5]} "
@@ -26,20 +26,20 @@ def input_to_index(input)
   input.to_i - 1
 end
 
-def move(board, index, character)
+def move(index, character)
   board[index] = character
 end
 
 
-def position_taken?(board, index)
+def position_taken?(index)
   !(board[index].nil? || board[index] == " ")
 end
 
-def valid_move?(board, index)
+def valid_move?(index)
    !position_taken?(board, index) && index.between?(0,8)
 end
 
-def turn(board)
+def turn
   puts "Please enter 1-9:"
   input = gets.strip
   index = input_to_index(input)
@@ -51,7 +51,7 @@ def turn(board)
   end
 end
 
-def turn_count(board)
+def turn_count
   counter = 0
   board.each do |token|
     if token == "X" || token == "O"
@@ -61,11 +61,11 @@ def turn_count(board)
 counter
 end
 
-def current_player(board)
+def current_player
   return turn_count(board).even? ? "X" : "O"
 end
 
-def won?(board)
+def won?
   WIN_COMBINATIONS.detect do |win_combo|
     if win_combo.all? do |win_index|
       board[win_index] == "X"
@@ -81,17 +81,17 @@ def won?(board)
  end
 end
 
-def full?(board)
+def full?
    board.all? {|po| po != " "}
 end
 
-def draw?(board)
+def draw?
   if full?(board) == true && !won?(board) == true
     true
   end
 end
 
-def over?(board)
+def over?
    if won?(board) != nil ||  draw?(board) == true
      true
    else
@@ -99,7 +99,7 @@ def over?(board)
    end
 end
 
-def winner(board)
+def winner
   WIN_COMBINATIONS.find do |win_combo|
     if board[win_combo[0]] == "X" && board[win_combo[1]] == "X" && board[win_combo[2]] == "X"
       return "X"
@@ -111,7 +111,7 @@ def winner(board)
   end
 end
 
-def play(board)
+def play
   until over?(board)
      turn(board)
   end
