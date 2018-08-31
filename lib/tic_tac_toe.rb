@@ -43,11 +43,11 @@ def turn
   puts "Please enter 1-9:"
   input = gets.strip
   index = input_to_index(input)
-  if valid_move?(board, index)
-    move(board, index, current_player(board))
-    display_board(board)
+  if valid_move?(index)
+    move(index, current_player)
+    display_board
   else
-    turn(board)
+    turn
   end
 end
 
@@ -62,17 +62,17 @@ counter
 end
 
 def current_player
-  return turn_count(board).even? ? "X" : "O"
+  return turn_count.even? ? "X" : "O"
 end
 
 def won?
   WIN_COMBINATIONS.detect do |win_combo|
     if win_combo.all? do |win_index|
-      board[win_index] == "X"
+      @board[win_index] == "X"
     end
     true
   elsif win_combo.all? do |win_index|
-      board[win_index] == "O"
+      @board[win_index] == "O"
     end
     true
   else
@@ -82,17 +82,17 @@ def won?
 end
 
 def full?
-   board.all? {|po| po != " "}
+   @board.all? {|po| po != " "}
 end
 
 def draw?
-  if full?(board) == true && !won?(board) == true
+  if full? == true && !won? == true
     true
   end
 end
 
 def over?
-   if won?(board) != nil ||  draw?(board) == true
+   if won? != nil ||  draw? == true
      true
    else
      false
@@ -101,9 +101,9 @@ end
 
 def winner
   WIN_COMBINATIONS.find do |win_combo|
-    if board[win_combo[0]] == "X" && board[win_combo[1]] == "X" && board[win_combo[2]] == "X"
+    if @board[win_combo[0]] == "X" && @board[win_combo[1]] == "X" && @board[win_combo[2]] == "X"
       return "X"
-    elsif board[win_combo[0]] == "O" && board[win_combo[1]] == "O" && board[win_combo[2]] == "O"
+    elsif @board[win_combo[0]] == "O" && @board[win_combo[1]] == "O" && @board[win_combo[2]] == "O"
       return "O"
     else
       nil
@@ -112,15 +112,15 @@ def winner
 end
 
 def play
-  until over?(board)
-     turn(board)
+  until over?
+     turn
   end
-  if won?(board)
-    puts "Congratulations #{winner(board)}!"
-  elsif draw?(board)
+  if won?
+    puts "Congratulations #{winner}!"
+  elsif draw?
     puts "Cat's Game!"
   end
-  won?(board)
+  won?
 end
 
 end
